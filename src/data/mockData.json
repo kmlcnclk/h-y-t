@@ -1,0 +1,37 @@
+[
+  {
+    "name": "asd",
+    "surname": "asd",
+    "email": "a@gmail.com",
+    "password": "123123",
+    "passwordConfirmation": "123123"
+  },
+  {
+    "name": "a",
+    "surname": "a",
+    "email": "aa@gmail.com",
+    "password": "23",
+    "passwordConfirmation": "23"
+  },
+  {
+    "name": "a",
+    "surname": "a",
+    "email": "aaa@gmail.com",
+    "password": "23",
+    "passwordConfirmation": "23"
+  },
+  {
+    "name": "aa",
+    "surname": "a",
+    "email": "adda@gmail.com",
+    "password": "asd",
+    "passwordConfirmation": "asd"
+  },
+  {
+    "name": "aa",
+    "surname": "a",
+    "email": "addaa@gmail.com",
+    "password": "asd",
+    "passwordConfirmation": "asd"
+  }
+]
