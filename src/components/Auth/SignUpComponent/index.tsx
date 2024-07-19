@@ -10,6 +10,12 @@ import { Button, CircularProgress } from "@mui/material";
 import { whiteTextFieldCss } from "@/common";
 import { toast } from "react-toastify";
 import { SignUpDataType } from "@/types/auth";
+import { addTokenToLocalStorage } from "@/localstorage/tokenStorage";
+import { addEmailToLocalStorage } from "@/localstorage/emailStorage";
+import { useRouter } from "next/navigation";
+import { AppDispatch } from "@/store";
+import { useDispatch } from "react-redux";
+import { setIsLogged } from "@/store/slices/authSlice";
 
 function SignUpComponent() {
   const [isClient, setIsClient] = useState(false);
@@ -23,6 +29,10 @@ function SignUpComponent() {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+
+  const router = useRouter();
+
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -41,6 +51,10 @@ function SignUpComponent() {
       if (res.ok) {
         setIsLoading(false);
         toast.success(data.message);
+        addTokenToLocalStorage(data.token);
+        addEmailToLocalStorage(signUpData.email);
+        dispatch(setIsLogged(true));
+        router.push("/");
       } else {
         setIsLoading(false);
         if (data?.message) toast.error(data.message);

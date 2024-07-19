@@ -1,8 +1,7 @@
 "use client";
 
 import { Box, Button, Drawer, Menu, MenuItem, Typography } from "@mui/material";
-import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -11,10 +10,27 @@ import AddCardIcon from "@mui/icons-material/AddCard";
 import PeopleIcon from "@mui/icons-material/People";
 import HomeIcon from "@mui/icons-material/Home";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+import {
+  deleteEmailFromLocalStorage,
+  getEmailFromLocalStorage,
+} from "@/localstorage/emailStorage";
+import {
+  deleteTokenFromLocalStorage,
+  getTokenFromLocalStorage,
+} from "@/localstorage/tokenStorage";
+import { setIsLogged } from "@/store/slices/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store";
 
 interface Props {}
 
 const Header: React.FC<Props> = () => {
+  const isLogged: boolean = useSelector(
+    (state: RootState) => state.auth.value.isLogged
+  ) as boolean;
+
+  const dispatch = useDispatch<AppDispatch>();
+
   const headList = [
     {
       name: "Home",
@@ -79,6 +95,11 @@ const Header: React.FC<Props> = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  useEffect(() => {
+    if (typeof window != "undefined") {
+      if (getTokenFromLocalStorage()) dispatch(setIsLogged(true));
+    }
+  }, [isLogged]);
 
   return (
     <Box
@@ -468,67 +489,133 @@ const Header: React.FC<Props> = () => {
           </Box>
         ))}
       </Box>
-      <Box sx={{}}>
-        <Button
-          variant="contained"
-          sx={{
-            justifyContent: "center",
-            alignItems: "center",
-            height: "40px",
-            px: { xs: "10px", sm: "30px" },
-            borderRadius: "5px",
-            backgroundColor: "#D59F4E",
-            transition: "transform 0.3s ease",
-            zIndex: "10000",
-            "&:hover": {
-              backgroundColor: "#D59F4E",
-              transform: "scale(1.05)",
-            },
-          }}
-          onClick={() => {
-            router.push("/auth/sign-up");
-          }}
-        >
-          <Typography
+      {isLogged ? (
+        <Box>
+          <Button
+            variant="contained"
             sx={{
-              fontSize: "15px",
-              color: "#333",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "40px",
+              px: { xs: "10px", sm: "30px" },
+              borderRadius: "5px",
+              backgroundColor: "#D59F4E",
+              transition: "transform 0.3s ease",
+              zIndex: "10000",
+              textTransform: "lowercase",
+              fontSize: "14px",
+              "&:hover": {
+                backgroundColor: "#D59F4E",
+              },
             }}
           >
-            Sign Up
-          </Typography>
-        </Button>
-        <Button
-          variant="contained"
-          sx={{
-            ml: "10px",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "40px",
-            px: { xs: "10px", sm: "30px" },
-            borderRadius: "5px",
-            backgroundColor: "#D59F4E",
-            transition: "transform 0.3s ease",
-            zIndex: "10000",
-            "&:hover": {
-              backgroundColor: "#D59F4E",
-              transform: "scale(1.05)",
-            },
-          }}
-          onClick={() => {
-            router.push("/auth/sign-in");
-          }}
-        >
-          <Typography
+            <Typography
+              sx={{
+                fontSize: "15px",
+                color: "#333",
+              }}
+            >
+              {getEmailFromLocalStorage()?.slice(0, 4)}...
+            </Typography>
+          </Button>
+
+          <Button
+            variant="contained"
             sx={{
-              fontSize: "15px",
-              color: "#333",
+              justifyContent: "center",
+              ml: "10px",
+              alignItems: "center",
+              height: "40px",
+              px: { xs: "10px", sm: "30px" },
+              borderRadius: "5px",
+              backgroundColor: "#dc2626",
+              transition: "transform 0.3s ease",
+              zIndex: "10000",
+              textTransform: "capitalize",
+              "&:hover": {
+                backgroundColor: "#dc2626",
+              },
+            }}
+            onClick={() => {
+              deleteTokenFromLocalStorage();
+              deleteEmailFromLocalStorage();
+              dispatch(setIsLogged(false));
+              router.push("/auth/sign-in");
             }}
           >
-            Sign In
-          </Typography>
-        </Button>
-      </Box>
+            <Typography
+              sx={{
+                fontSize: "15px",
+                color: "#fff",
+              }}
+            >
+              Logout
+            </Typography>
+          </Button>
+        </Box>
+      ) : (
+        <Box sx={{}}>
+          <Button
+            variant="contained"
+            sx={{
+              justifyContent: "center",
+              alignItems: "center",
+              height: "40px",
+              px: { xs: "10px", sm: "30px" },
+              borderRadius: "5px",
+              backgroundColor: "#D59F4E",
+              transition: "transform 0.3s ease",
+              zIndex: "10000",
+              "&:hover": {
+                backgroundColor: "#D59F4E",
+                transform: "scale(1.05)",
+              },
+            }}
+            onClick={() => {
+              router.push("/auth/sign-up");
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: "15px",
+                color: "#333",
+              }}
+            >
+              Sign Up
+            </Typography>
+          </Button>
+          <Button
+            variant="contained"
+            sx={{
+              ml: "10px",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "40px",
+              px: { xs: "10px", sm: "30px" },
+              borderRadius: "5px",
+              backgroundColor: "#D59F4E",
+              transition: "transform 0.3s ease",
+              zIndex: "10000",
+              "&:hover": {
+                backgroundColor: "#D59F4E",
+                transform: "scale(1.05)",
+              },
+            }}
+            onClick={() => {
+              router.push("/auth/sign-in");
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: "15px",
+                color: "#333",
+              }}
+            >
+              Sign In
+            </Typography>
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 };

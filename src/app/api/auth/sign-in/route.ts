@@ -13,10 +13,12 @@ export async function POST(request: Request) {
   const existUser = users.find((u: SignUpDataType) => u.email === user.email);
 
   if (existUser?.email) {
-    console.log(user.password, existUser.password);
     if (user.password === existUser.password)
       return new Response(
-        JSON.stringify({ message: "Sign In is successful." }),
+        JSON.stringify({
+          message: "Sign In is successful.",
+          token: "encrypted token",
+        }),
         { status: 200 }
       );
     else

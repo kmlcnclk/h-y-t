@@ -1,62 +1,80 @@
 "use client";
 
-import { RootState } from "@/store";
-import { BillsValueType } from "@/store/slices/billsSlice";
-import {
-  Box,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-} from "@mui/material";
-import React from "react";
-import { useSelector } from "react-redux";
+import { Invoice } from "@/types/bills";
+import { Box, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 
 function BillComponent() {
-  const billsValues: BillsValueType = useSelector(
-    (state: RootState) => state.bills.value
-  ) as BillsValueType;
+  const [bills, setBills] = useState<Invoice[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await fetch(`/api/bills/get-all`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        setBills(data.bills);
+      } else {
+        if (data?.message) toast.error(data.message);
+        else if (data?.error) toast.error(data.error.message);
+        else if (data[0]) toast.error(data[0].message);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const columns: GridColDef[] = [
+    { field: "invoiceNumber", headerName: "Invoice Number", width: 150 },
+    { field: "invoiceDate", headerName: "Invoice Date", width: 150 },
+    { field: "sellerName", headerName: "Seller Name", width: 150 },
+    { field: "sellerTaxOffice", headerName: "Seller Tax Office", width: 150 },
+    { field: "sellerTaxNumber", headerName: "Seller Tax Number", width: 150 },
+    { field: "sellerPhone", headerName: "Seller Phone", width: 150 },
+    { field: "sellerEmail", headerName: "Seller Email", width: 200 },
+    { field: "sellerAddress", headerName: "Seller Address", width: 200 },
+    { field: "buyerName", headerName: "Buyer Name", width: 150 },
+    { field: "buyerTaxOffice", headerName: "Buyer Tax Office", width: 150 },
+    { field: "buyerTaxNumber", headerName: "Buyer Tax Number", width: 150 },
+    { field: "buyerPhone", headerName: "Buyer Phone", width: 150 },
+    { field: "buyerEmail", headerName: "Buyer Email", width: 200 },
+    { field: "buyerAddress", headerName: "Buyer Address", width: 200 },
+    { field: "paymentTerms", headerName: "Payment Terms", width: 150 },
+  ];
+
+  const rows = bills.map((bill, index) => ({
+    id: index,
+    ...bill,
+  }));
 
   return (
     <Box
       sx={{
-        mt: "70px",
+        mt: "100px",
         display: "flex",
         justifyContent: "center",
-        alignItems: "center",
-        height: "calc(100vh - 70px)",
+        px: "50px",
       }}
     >
-      {billsValues.bills[0] ? (
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell align="right">Surname</TableCell>
-                <TableCell align="right">Date</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {billsValues.bills.map((row) => (
-                <TableRow
-                  key={row.date}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {row.name}
-                  </TableCell>
-                  <TableCell align="right">{row.surname}</TableCell>
-                  <TableCell align="right">{row.date}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+      {bills.length > 0 ? (
+        <div style={{ height: 600, width: "100%" }}>
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            pageSizeOptions={[5, 10, 20]}
+            checkboxSelection
+            sx={{
+              bgcolor: "white",
+            }}
+          />
+        </div>
       ) : (
         <Typography
           sx={{

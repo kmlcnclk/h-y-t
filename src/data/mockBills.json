@@ -1,0 +1,66 @@
+[
+  {
+    "invoiceNumber": "",
+    "invoiceDate": "",
+    "sellerName": "",
+    "sellerTaxOffice": "",
+    "sellerTaxNumber": "",
+    "sellerAddress": "",
+    "sellerPhone": "",
+    "sellerEmail": "",
+    "buyerName": "",
+    "buyerTaxOffice": "",
+    "buyerTaxNumber": "",
+    "buyerAddress": "",
+    "buyerPhone": "",
+    "buyerEmail": "",
+    "items": [
+      {
+        "itemName": "",
+        "quantity": 0,
+        "unitPrice": 0,
+        "totalPrice": 0
+      }
+    ],
+    "subTotal": 0,
+    "vat": 0,
+    "discount": 0,
+    "totalAmount": 0,
+    "paymentTerms": "",
+    "bankDetails": "",
+    "notes": "",
+    "authorizedSignature": ""
+  },
+  {
+    "invoiceNumber": "asdasd",
+    "invoiceDate": "2001-02-02",
+    "sellerName": "asdad",
+    "sellerTaxOffice": "adsds",
+    "sellerTaxNumber": "sdfsdf",
+    "sellerAddress": "fsdfdsfds",
+    "sellerPhone": "asda",
+    "sellerEmail": "a@a.com",
+    "buyerName": "ad",
+    "buyerTaxOffice": "sdsd",
+    "buyerTaxNumber": "sdf",
+    "buyerAddress": "sdf",
+    "buyerPhone": "sdf",
+    "buyerEmail": "b@b.com",
+    "items": [
+      {
+        "itemName": "",
+        "quantity": 0,
+        "unitPrice": 0,
+        "totalPrice": 0
+      }
+    ],
+    "subTotal": 0,
+    "vat": 0,
+    "discount": 0,
+    "totalAmount": 0,
+    "paymentTerms": "asdasd",
+    "bankDetails": "asda",
+    "notes": "sdf",
+    "authorizedSignature": "sdf"
+  }
+]

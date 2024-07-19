@@ -2,9 +2,9 @@
   {
     "name": "asd",
     "surname": "asd",
-    "email": "a@gmail.com",
-    "password": "123123",
-    "passwordConfirmation": "123123"
+    "email": "asd@gmail.com",
+    "password": "asd",
+    "passwordConfirmation": "asd"
   },
   {
     "name": "a",
@@ -33,5 +33,12 @@
     "email": "addaa@gmail.com",
     "password": "asd",
     "passwordConfirmation": "asd"
+  },
+  {
+    "name": "aa",
+    "surname": "aa",
+    "email": "aaaa@gmail.com",
+    "password": "123123",
+    "passwordConfirmation": "123123"
   }
 ]

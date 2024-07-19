@@ -19,7 +19,10 @@ export async function POST(request: Request) {
 
     fs.writeFileSync(filePath, JSON.stringify(users, null, 2), "utf8");
     return new Response(
-      JSON.stringify({ message: "User is successfully added!" }),
+      JSON.stringify({
+        message: "User is successfully sign up",
+        token: "encrypted token",
+      }),
       { status: 201 }
     );
   }
